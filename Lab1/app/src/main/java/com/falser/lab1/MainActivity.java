@@ -3,11 +3,14 @@ package com.falser.lab1;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.Chronometer;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -35,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
             }
             imagesRows.addView(imageRow, i);
         }
+        ImageButton.chronometer = findViewById(R.id.chronometer);
+        ImageButton.progress = findViewById(R.id.progress);
         restart();
     }
 
@@ -48,9 +53,14 @@ public class MainActivity extends AppCompatActivity {
                 image.number = setsIds.get(k);
                 image.is_chosen = false;
                 image.setText("");
-//                image.setText(String.format(Locale.getDefault(), "(%d)", image.number));
+//                image.setText(String.format("(%d)", image.number));
             }
         }
+        ImageButton.chronometer.stop();
+        ImageButton.chronometer.setBase(SystemClock.elapsedRealtime());
+        ImageButton.progressInt = Constants.N_SETS;
+        ImageButton.progress.setText(String.valueOf(ImageButton.progressInt));
+        ImageButton.state = Constants.N_STATES;
     }
 
     private void updateRandom() {
@@ -69,7 +79,10 @@ public class MainActivity extends AppCompatActivity {
 
 class ImageButton extends AppCompatButton implements View.OnClickListener {
     static List<ImageButton> pickedButtons = new ArrayList<>();
-    static int state = Constants.SET_LENGTH;
+    static int state;
+    static Chronometer chronometer;
+    static TextView progress;
+    static int progressInt;
     int number;
     boolean is_chosen;
 
@@ -91,25 +104,36 @@ class ImageButton extends AppCompatButton implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        if (is_chosen || pickedButtons.contains(this)) {
+        if (!chronometer.isActivated() && progressInt > 0)
+            chronometer.start();
+        if (is_chosen || state != Constants.N_STATES && pickedButtons.contains(this)) {
             return;
         }
-        if (state == -1) {
-            state = Constants.SET_LENGTH;
-
-            if (!checkAllEqual()) {
-                for (ImageButton button : pickedButtons)
-                    button.setText("");
-            } else {
-                for (ImageButton button : pickedButtons) {
-                    button.is_chosen = true;
-                }
-            }
+        if (state == Constants.N_STATES) {
+            for (ImageButton button : pickedButtons)
+                button.setText("");
             pickedButtons.clear();
         }
         pickedButtons.add(this);
         state--;
         setText(String.valueOf(number));
+
+        if (state != 0) {
+            return;
+        }
+        state = Constants.N_STATES;
+        if (!checkAllEqual()) {
+            return;
+        }
+        for (ImageButton button : pickedButtons) {
+            button.is_chosen = true;
+        }
+        pickedButtons.clear();
+        progressInt--;
+        progress.setText(String.valueOf(progressInt));
+        if (progressInt == 0){
+            chronometer.stop();
+        }
     }
 
     boolean checkAllEqual() {
