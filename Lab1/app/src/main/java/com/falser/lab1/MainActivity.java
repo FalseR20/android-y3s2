@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
             for (int j = 0; j < ROWS_COUNT; j++) {
                 ImageButton image = (ImageButton) row.getChildAt(j);
                 image.number = PAIRS.get(i * ROWS_COUNT + j);
+                image.setText("");
             }
         }
     }
