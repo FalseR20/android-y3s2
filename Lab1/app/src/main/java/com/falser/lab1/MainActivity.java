@@ -46,8 +46,9 @@ public class MainActivity extends AppCompatActivity {
             for (int j = 0; j < Constants.N_COLUMNS; j++, k++) {
                 ImageButton image = (ImageButton) row.getChildAt(j);
                 image.number = setsIds.get(k);
+                image.is_chosen = false;
                 image.setText("");
-//                image.setText(String.valueOf(image.number));
+//                image.setText(String.format(Locale.getDefault(), "(%d)", image.number));
             }
         }
     }
@@ -70,6 +71,7 @@ class ImageButton extends AppCompatButton implements View.OnClickListener {
     static List<ImageButton> pickedButtons = new ArrayList<>();
     static int state = Constants.SET_LENGTH;
     int number;
+    boolean is_chosen;
 
     public ImageButton(Context context) {
         super(context);
@@ -89,7 +91,7 @@ class ImageButton extends AppCompatButton implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        if (pickedButtons.contains(this)) {
+        if (is_chosen || pickedButtons.contains(this)) {
             return;
         }
         if (state == -1) {
@@ -98,6 +100,10 @@ class ImageButton extends AppCompatButton implements View.OnClickListener {
             if (!checkAllEqual()) {
                 for (ImageButton button : pickedButtons)
                     button.setText("");
+            } else {
+                for (ImageButton button : pickedButtons) {
+                    button.is_chosen = true;
+                }
             }
             pickedButtons.clear();
         }
