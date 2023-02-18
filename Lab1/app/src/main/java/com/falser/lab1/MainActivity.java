@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -17,9 +18,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    final int ROWS_COUNT = 4;
-    final int IMAGES_COUNT = ROWS_COUNT * ROWS_COUNT;
-    final int PAIRS_COUNT = IMAGES_COUNT / 2;
+    final static int ROWS_COUNT = 6;
+    final static int IMAGES_COUNT = ROWS_COUNT * ROWS_COUNT;
 
     TableLayout imagesRows;
 
@@ -50,14 +50,15 @@ public class MainActivity extends AppCompatActivity {
                 ImageButton image = (ImageButton) row.getChildAt(j);
                 image.number = PAIRS.get(i * ROWS_COUNT + j);
                 image.setText("");
+//                image.setText(String.valueOf(image.number));
             }
         }
     }
 
     private void updateRandom() {
         Integer[] intsArray = new Integer[IMAGES_COUNT];
-        for (int i = 0; i < PAIRS_COUNT; i++)
-            intsArray[2 * i] = intsArray[2 * i + 1] = i;
+        for (int i = 0; i < IMAGES_COUNT; i++)
+            intsArray[i]  = i / ImageButton.STATE_COUNT;
         PAIRS = Arrays.asList(intsArray);
         Collections.shuffle(PAIRS);
         Log.d("restart()", String.format("Random ints: %s", PAIRS));
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
 class ImageButton extends AppCompatButton implements View.OnClickListener {
     public int number;
-    public static final int STATE_COUNT = 2;
+    public static final int STATE_COUNT = 3;
     public static final int STATE_DEFAULT = STATE_COUNT - 1;
 
     public static List<ImageButton> numbersButtons = new ArrayList<>();
@@ -83,6 +84,7 @@ class ImageButton extends AppCompatButton implements View.OnClickListener {
         params.weight = 1;
         params.rightMargin = params.leftMargin = 5;
         setLayoutParams(params);
+        setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 8, getResources().getDisplayMetrics()));
         setOnClickListener(this);
     }
 
@@ -101,7 +103,7 @@ class ImageButton extends AppCompatButton implements View.OnClickListener {
             state = STATE_DEFAULT;
 
             if (!checkAllEqual()) {
-                for (ImageButton button: numbersButtons)
+                for (ImageButton button : numbersButtons)
                     button.setText("");
             }
             numbersButtons.clear();
@@ -113,7 +115,7 @@ class ImageButton extends AppCompatButton implements View.OnClickListener {
 
     boolean checkAllEqual() {
         int check = numbersButtons.get(0).number;
-        for (ImageButton button: numbersButtons) {
+        for (ImageButton button : numbersButtons) {
             if (check != button.number)
                 return false;
         }
