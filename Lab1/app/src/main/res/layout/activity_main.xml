@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
 
 
-            android:onClick="restartClick"
+            android:onClick="restartOnClick"
             android:text="Restart"
             android:textAllCaps="false"
             android:textSize="@dimen/textSize"

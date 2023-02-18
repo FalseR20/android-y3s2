@@ -21,9 +21,15 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     TableLayout imagesRows;
     List<Integer> setsIds;
+
+    List<ImageButton> pickedButtons = new ArrayList<>();
+    int state;
+    Chronometer chronometer;
+    TextView progress;
+    int progressInt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,17 +40,19 @@ public class MainActivity extends AppCompatActivity {
             TableRow imageRow = new TableRow(this);
             for (int j = 0; j < Constants.N_COLUMNS; j++) {
                 ImageButton imageButton = new ImageButton(this);
+                imageButton.setOnClickListener(this);
                 imageRow.addView(imageButton, j);
             }
             imagesRows.addView(imageRow, i);
         }
-        ImageButton.chronometer = findViewById(R.id.chronometer);
-        ImageButton.progress = findViewById(R.id.progress);
-        restart();
+        chronometer = findViewById(R.id.chronometer);
+        progress = findViewById(R.id.progress);
+        createSetsIds();
+        resetImages();
     }
 
-    public void restart() {
-        updateRandom();
+    public void resetImages() {
+        randomizeSetsIds();
         TableRow row;
         for (int i = 0, k = 0; i < Constants.N_ROWS; i++) {
             row = (TableRow) imagesRows.getChildAt(i);
@@ -56,57 +64,34 @@ public class MainActivity extends AppCompatActivity {
 //                image.setText(String.format("(%d)", image.number));
             }
         }
-        ImageButton.chronometer.stop();
-        ImageButton.chronometer.setBase(SystemClock.elapsedRealtime());
-        ImageButton.progressInt = Constants.N_SETS;
-        ImageButton.progress.setText(String.valueOf(ImageButton.progressInt));
-        ImageButton.state = Constants.N_STATES;
+        chronometer.stop();
+        chronometer.setBase(SystemClock.elapsedRealtime());
+        progressInt = Constants.N_SETS;
+        progress.setText(String.valueOf(progressInt));
+        state = Constants.N_STATES;
     }
 
-    private void updateRandom() {
+    private void createSetsIds() {
         Integer[] intsArray = new Integer[Constants.N_IMAGES];
         for (int i = 0; i < Constants.N_IMAGES; i++)
             intsArray[i] = i / Constants.N_STATES;
         setsIds = Arrays.asList(intsArray);
+    }
+
+    private void randomizeSetsIds() {
         Collections.shuffle(setsIds);
-        Log.d("restart()", String.format("Random ints: %s", setsIds));
+        Log.d(this.getClass().getName(), String.format("Random ints: %s", setsIds));
     }
 
-    public void restartClick(View view) {
-        restart();
-    }
-}
-
-class ImageButton extends AppCompatButton implements View.OnClickListener {
-    static List<ImageButton> pickedButtons = new ArrayList<>();
-    static int state;
-    static Chronometer chronometer;
-    static TextView progress;
-    static int progressInt;
-    int number;
-    boolean is_chosen;
-
-    public ImageButton(Context context) {
-        super(context);
-        TableRow.LayoutParams params = new TableRow.LayoutParams();
-        params.weight = 1;
-        params.rightMargin = params.leftMargin = 5;
-        setLayoutParams(params);
-        setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 8, getResources().getDisplayMetrics()));
-        setOnClickListener(this);
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        setHeight(getWidth());
-        super.onDraw(canvas);
+    public void restartOnClick(View view) {
+        resetImages();
     }
 
     @Override
     public void onClick(View view) {
-        if (!chronometer.isActivated() && progressInt > 0)
-            chronometer.start();
-        if (is_chosen || state != Constants.N_STATES && pickedButtons.contains(this)) {
+        ImageButton imageButton = (ImageButton) view;
+        if (!chronometer.isActivated() && progressInt > 0) chronometer.start();
+        if (imageButton.is_chosen || state != Constants.N_STATES && pickedButtons.contains(imageButton)) {
             return;
         }
         if (state == Constants.N_STATES) {
@@ -114,9 +99,9 @@ class ImageButton extends AppCompatButton implements View.OnClickListener {
                 button.setText("");
             pickedButtons.clear();
         }
-        pickedButtons.add(this);
+        pickedButtons.add(imageButton);
         state--;
-        setText(String.valueOf(number));
+        imageButton.setText(String.valueOf(imageButton.number));
 
         if (state != 0) {
             return;
@@ -131,7 +116,7 @@ class ImageButton extends AppCompatButton implements View.OnClickListener {
         pickedButtons.clear();
         progressInt--;
         progress.setText(String.valueOf(progressInt));
-        if (progressInt == 0){
+        if (progressInt == 0) {
             chronometer.stop();
         }
     }
@@ -143,4 +128,25 @@ class ImageButton extends AppCompatButton implements View.OnClickListener {
         }
         return true;
     }
+}
+
+class ImageButton extends AppCompatButton {
+    int number;
+    boolean is_chosen;
+
+    public ImageButton(Context context) {
+        super(context);
+        TableRow.LayoutParams params = new TableRow.LayoutParams();
+        params.weight = 1;
+        params.rightMargin = params.leftMargin = 5;
+        setLayoutParams(params);
+        setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 8, getResources().getDisplayMetrics()));
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        setHeight(getWidth());
+        super.onDraw(canvas);
+    }
+
 }
