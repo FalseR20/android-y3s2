@@ -17,22 +17,19 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+
 public class MainActivity extends AppCompatActivity {
-    final static int ROWS_COUNT = 6;
-    final static int IMAGES_COUNT = ROWS_COUNT * ROWS_COUNT;
-
     TableLayout imagesRows;
-
-    List<Integer> PAIRS;
+    List<Integer> setsIds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         imagesRows = findViewById(R.id.images);
-        for (int i = 0; i < ROWS_COUNT; i++) {
+        for (int i = 0; i < Constants.N_ROWS; i++) {
             TableRow imageRow = new TableRow(this);
-            for (int j = 0; j < ROWS_COUNT; j++) {
+            for (int j = 0; j < Constants.N_COLUMNS; j++) {
                 ImageButton imageButton = new ImageButton(this);
                 imageRow.addView(imageButton, j);
             }
@@ -44,11 +41,11 @@ public class MainActivity extends AppCompatActivity {
     public void restart() {
         updateRandom();
         TableRow row;
-        for (int i = 0; i < ROWS_COUNT; i++) {
+        for (int i = 0, k = 0; i < Constants.N_ROWS; i++) {
             row = (TableRow) imagesRows.getChildAt(i);
-            for (int j = 0; j < ROWS_COUNT; j++) {
+            for (int j = 0; j < Constants.N_COLUMNS; j++, k++) {
                 ImageButton image = (ImageButton) row.getChildAt(j);
-                image.number = PAIRS.get(i * ROWS_COUNT + j);
+                image.number = setsIds.get(k);
                 image.setText("");
 //                image.setText(String.valueOf(image.number));
             }
@@ -56,12 +53,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateRandom() {
-        Integer[] intsArray = new Integer[IMAGES_COUNT];
-        for (int i = 0; i < IMAGES_COUNT; i++)
-            intsArray[i]  = i / ImageButton.STATE_COUNT;
-        PAIRS = Arrays.asList(intsArray);
-        Collections.shuffle(PAIRS);
-        Log.d("restart()", String.format("Random ints: %s", PAIRS));
+        Integer[] intsArray = new Integer[Constants.N_IMAGES];
+        for (int i = 0; i < Constants.N_IMAGES; i++)
+            intsArray[i] = i / Constants.N_STATES;
+        setsIds = Arrays.asList(intsArray);
+        Collections.shuffle(setsIds);
+        Log.d("restart()", String.format("Random ints: %s", setsIds));
     }
 
     public void restartClick(View view) {
@@ -70,13 +67,9 @@ public class MainActivity extends AppCompatActivity {
 }
 
 class ImageButton extends AppCompatButton implements View.OnClickListener {
-    public int number;
-    public static final int STATE_COUNT = 3;
-    public static final int STATE_DEFAULT = STATE_COUNT - 1;
-
-    public static List<ImageButton> numbersButtons = new ArrayList<>();
-
-    public static int state = STATE_DEFAULT;
+    static List<ImageButton> pickedButtons = new ArrayList<>();
+    static int state = Constants.SET_LENGTH;
+    int number;
 
     public ImageButton(Context context) {
         super(context);
@@ -96,28 +89,27 @@ class ImageButton extends AppCompatButton implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        if (numbersButtons.contains(this)) {
+        if (pickedButtons.contains(this)) {
             return;
         }
         if (state == -1) {
-            state = STATE_DEFAULT;
+            state = Constants.SET_LENGTH;
 
             if (!checkAllEqual()) {
-                for (ImageButton button : numbersButtons)
+                for (ImageButton button : pickedButtons)
                     button.setText("");
             }
-            numbersButtons.clear();
+            pickedButtons.clear();
         }
-        numbersButtons.add(this);
+        pickedButtons.add(this);
         state--;
         setText(String.valueOf(number));
     }
 
     boolean checkAllEqual() {
-        int check = numbersButtons.get(0).number;
-        for (ImageButton button : numbersButtons) {
-            if (check != button.number)
-                return false;
+        int check = pickedButtons.get(0).number;
+        for (ImageButton button : pickedButtons) {
+            if (check != button.number) return false;
         }
         return true;
     }
