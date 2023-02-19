@@ -140,7 +140,7 @@ class ImageButton extends AppCompatButton {
         super(context);
         TableRow.LayoutParams params = new TableRow.LayoutParams();
         params.weight = 1;
-        params.rightMargin = params.leftMargin = 5;
+        params.rightMargin = params.leftMargin = (int) getResources().getDimension(R.dimen.defMargin);
         setLayoutParams(params);
         setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 8, getResources().getDisplayMetrics()));
     }
