@@ -1,3 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name" tools:ignore="Typos">Lab1</string>
+    <string name="win">You are winner</string>
+    <string name="lost">Game over</string>
 </resources>

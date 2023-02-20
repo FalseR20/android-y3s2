@@ -11,6 +11,7 @@ import android.widget.Chronometer;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -30,7 +31,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     int state;
     Chronometer chronometer;
     TextView progress;
-    int progressInt;
+    int imagesLeft;
+    int triesLeft;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +70,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         chronometer.stop();
         chronometer.setBase(SystemClock.elapsedRealtime());
-        progressInt = Constants.N_SETS;
-        progress.setText(String.valueOf(progressInt));
+        imagesLeft = Constants.N_SETS;
+        triesLeft = Constants.N_TRIES;
+        progress.setText(String.valueOf(triesLeft));
         state = Constants.N_STATES;
     }
 
@@ -92,8 +95,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         ImageButton imageButton = (ImageButton) view;
-        if (!chronometer.isActivated() && progressInt > 0) chronometer.start();
-        if (imageButton.is_chosen || state != Constants.N_STATES && pickedButtons.contains(imageButton)) {
+        if (!chronometer.isActivated() && imagesLeft > 0) chronometer.start();
+        if (imageButton.is_chosen || imagesLeft < 1 || state != Constants.N_STATES && pickedButtons.contains(imageButton)) {
             return;
         }
         if (state == Constants.N_STATES) {
@@ -109,6 +112,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
         state = Constants.N_STATES;
+        triesLeft--;
+        progress.setText(String.valueOf(triesLeft));
+        if (triesLeft == 0) {
+            Toast.makeText(this, R.string.lost, Toast.LENGTH_SHORT).show();
+            imagesLeft = -1;
+            return;
+        }
         if (!checkAllEqual()) {
             return;
         }
@@ -116,10 +126,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             button.is_chosen = true;
         }
         pickedButtons.clear();
-        progressInt--;
-        progress.setText(String.valueOf(progressInt));
-        if (progressInt == 0) {
+        imagesLeft--;
+        if (imagesLeft == 0) {
             chronometer.stop();
+            Toast.makeText(this, R.string.win, Toast.LENGTH_SHORT).show();
         }
     }
 
