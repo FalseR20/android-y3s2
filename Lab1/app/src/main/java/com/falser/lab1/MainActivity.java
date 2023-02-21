@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(this, R.string.game_over, Toast.LENGTH_SHORT).show();
             return;
         }
-        if (plateButton.is_chosen) {
+        if (plateButton.is_chosen || pickedButtons.contains(plateButton)) {
             return;
         }
 
