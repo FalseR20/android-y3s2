@@ -168,13 +168,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 pickedButtons.clear();
                 platesLeft--;
                 if (platesLeft == 0) {
-                    isGameFinished = true;
-                    chronometer.stop();
                     if (isGameFinished) {
                         Toast.makeText(this, R.string.almost_losing, Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(this, R.string.win, Toast.LENGTH_SHORT).show();
                     }
+                    isGameFinished = true;
+                    chronometer.stop();
                     return;
                 }
             } else {
