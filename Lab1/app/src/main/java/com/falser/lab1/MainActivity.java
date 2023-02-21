@@ -2,6 +2,7 @@ package com.falser.lab1;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     List<ImageButton> pickedButtons = new ArrayList<>();
     int state;
     Chronometer chronometer;
-    TextView progress;
+    TextView triesCounter;
     int imagesLeft;
     int triesLeft;
 
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             imagesRows.addView(imageRow, i);
         }
         chronometer = findViewById(R.id.chronometer);
-        progress = findViewById(R.id.progress);
+        triesCounter = findViewById(R.id.triesCounter);
         createSetsIds();
         resetImages();
     }
@@ -72,7 +73,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         chronometer.setBase(SystemClock.elapsedRealtime());
         imagesLeft = Constants.N_SETS;
         triesLeft = Constants.N_TRIES;
-        progress.setText(String.valueOf(triesLeft));
+        triesCounter.setText(String.valueOf(triesLeft));
+        triesCounter.setTextColor(Color.WHITE);
         state = Constants.N_STATES;
     }
 
@@ -113,11 +115,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         state = Constants.N_STATES;
         triesLeft--;
-        progress.setText(String.valueOf(triesLeft));
+        triesCounter.setText(String.valueOf(triesLeft));
         if (triesLeft == 0) {
+            triesCounter.setTextColor(Color.RED);
             Toast.makeText(this, R.string.lost, Toast.LENGTH_SHORT).show();
             imagesLeft = -1;
+            chronometer.stop();
             return;
+        }
+        if (triesLeft <= 9) {
+            triesCounter.setTextColor(0xFFFF7F7F);
         }
         if (!checkAllEqual()) {
             return;

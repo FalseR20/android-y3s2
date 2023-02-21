@@ -27,7 +27,7 @@
             android:textSize="@dimen/textSize"
 
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/progress"
+            app:layout_constraintEnd_toStartOf="@+id/triesCounter"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -35,7 +35,7 @@
 
 
         <TextView
-            android:id="@+id/progress"
+            android:id="@+id/triesCounter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -45,7 +45,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5"
 
-            android:textSize="@dimen/textSize"/>
+            android:textSize="@dimen/textSize"
+            android:textColor="@color/white"/>
 
         <Button
             android:id="@+id/restart"
@@ -60,7 +61,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/progress"
+            app:layout_constraintStart_toEndOf="@+id/triesCounter"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5"
             tools:ignore="HardcodedText" />
