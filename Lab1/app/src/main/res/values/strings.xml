@@ -2,4 +2,7 @@
     <string name="app_name" tools:ignore="Typos">Lab1</string>
     <string name="win">You are winner</string>
     <string name="lost">Game over</string>
+    <string name="count_of_rows">Count of rows</string>
+    <string name="count_of_columns">Count of columns</string>
+    <string name="count_of_states">Count of states</string>
 </resources>

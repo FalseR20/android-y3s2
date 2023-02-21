@@ -1,21 +1,19 @@
 package com.falser.lab1;
 
-import android.content.Context;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Chronometer;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,57 +23,41 @@ import java.util.Objects;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    TableLayout imagesRows;
+    TableLayout rows;
     List<Integer> setsIds;
 
-    List<ImageButton> pickedButtons = new ArrayList<>();
+    List<PlateButton> pickedButtons = new ArrayList<>();
     int state;
     Chronometer chronometer;
     TextView triesCounter;
-    int imagesLeft;
+    int platesLeft;
     int triesLeft;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_main);
-        imagesRows = findViewById(R.id.images);
+        createElements();
+        createSetsIds();
+        restartImages();
+        createSettings();
+    }
+
+    void createElements() {
+        rows = findViewById(R.id.images);
         for (int i = 0; i < Constants.N_ROWS; i++) {
             TableRow imageRow = new TableRow(this);
             for (int j = 0; j < Constants.N_COLUMNS; j++) {
-                ImageButton imageButton = new ImageButton(this);
-                imageButton.setOnClickListener(this);
-                imageRow.addView(imageButton, j);
+                PlateButton plateButton = new PlateButton(this);
+                plateButton.setOnClickListener(this);
+                imageRow.addView(plateButton, j);
             }
-            imagesRows.addView(imageRow, i);
+            rows.addView(imageRow, i);
         }
         chronometer = findViewById(R.id.chronometer);
         triesCounter = findViewById(R.id.triesCounter);
-        createSetsIds();
-        resetImages();
-    }
-
-    public void resetImages() {
-        randomizeSetsIds();
-        TableRow row;
-        for (int i = 0, k = 0; i < Constants.N_ROWS; i++) {
-            row = (TableRow) imagesRows.getChildAt(i);
-            for (int j = 0; j < Constants.N_COLUMNS; j++, k++) {
-                ImageButton image = (ImageButton) row.getChildAt(j);
-                image.number = setsIds.get(k);
-                image.is_chosen = false;
-                image.setText("");
-//                image.setText(String.format("(%d)", image.number));
-            }
-        }
-        chronometer.stop();
-        chronometer.setBase(SystemClock.elapsedRealtime());
-        imagesLeft = Constants.N_SETS;
-        triesLeft = Constants.N_TRIES;
-        triesCounter.setText(String.valueOf(triesLeft));
-        triesCounter.setTextColor(Color.WHITE);
-        state = Constants.N_STATES;
     }
 
     private void createSetsIds() {
@@ -85,33 +67,83 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setsIds = Arrays.asList(intsArray);
     }
 
+    public void restartImages() {
+        randomizeSetsIds();
+        TableRow row;
+        for (int i = 0, k = 0; i < Constants.N_ROWS; i++) {
+            row = (TableRow) rows.getChildAt(i);
+            for (int j = 0; j < Constants.N_COLUMNS; j++, k++) {
+                PlateButton image = (PlateButton) row.getChildAt(j);
+                image.number = setsIds.get(k);
+                image.is_chosen = false;
+                image.setText("");
+//                image.setText(String.format("(%d)", image.number));
+            }
+        }
+        chronometer.stop();
+        chronometer.setBase(SystemClock.elapsedRealtime());
+        platesLeft = Constants.N_SETS;
+        triesLeft = Constants.N_TRIES;
+        triesCounter.setText(String.valueOf(triesLeft));
+        triesCounter.setTextColor(Color.WHITE);
+        state = Constants.N_STATES;
+    }
+
     private void randomizeSetsIds() {
         Collections.shuffle(setsIds);
         Log.d(this.getClass().getName(), String.format("Random ints: %s", setsIds));
     }
 
+    private void createSettings() {
+        TableRow setting;
+        TextView label;
+        Spinner spinner;
+        ArrayAdapter<CharSequence> adapter;
+
+        setting = findViewById(R.id.settingsRows);
+        label = (TextView) setting.getChildAt(0);
+        label.setText(R.string.count_of_rows);
+        spinner = (Spinner) setting.getChildAt(1);
+        adapter = ArrayAdapter.createFromResource(this, R.array.rows_array, android.R.layout.simple_dropdown_item_1line);
+        spinner.setAdapter(adapter);
+
+        setting = findViewById(R.id.settingsColumns);
+        label = (TextView) setting.getChildAt(0);
+        label.setText(R.string.count_of_columns);
+        spinner = (Spinner) setting.getChildAt(1);
+        adapter = ArrayAdapter.createFromResource(this, R.array.columns_array, android.R.layout.simple_dropdown_item_1line);
+        spinner.setAdapter(adapter);
+
+        setting = findViewById(R.id.settingsStates);
+        label = (TextView) setting.getChildAt(0);
+        label.setText(R.string.count_of_states);
+        spinner = (Spinner) setting.getChildAt(1);
+        adapter = ArrayAdapter.createFromResource(this, R.array.states_array, android.R.layout.simple_dropdown_item_1line);
+        spinner.setAdapter(adapter);
+    }
+
     public void restartOnClick(View view) {
-        resetImages();
+        restartImages();
     }
 
     @Override
     public void onClick(View view) {
-        ImageButton imageButton = (ImageButton) view;
-        if (!chronometer.isActivated() && imagesLeft > 0) {
+        PlateButton plateButton = (PlateButton) view;
+        if (!chronometer.isActivated() && platesLeft > 0) {
             chronometer.setBase(SystemClock.elapsedRealtime());
             chronometer.start();
         }
-        if (imageButton.is_chosen || imagesLeft < 1 || state != Constants.N_STATES && pickedButtons.contains(imageButton)) {
+        if (plateButton.is_chosen || platesLeft < 1 || state != Constants.N_STATES && pickedButtons.contains(plateButton)) {
             return;
         }
         if (state == Constants.N_STATES) {
-            for (ImageButton button : pickedButtons)
+            for (PlateButton button : pickedButtons)
                 button.setText("");
             pickedButtons.clear();
         }
-        pickedButtons.add(imageButton);
+        pickedButtons.add(plateButton);
         state--;
-        imageButton.setText(String.valueOf(imageButton.number));
+        plateButton.setText(String.valueOf(plateButton.number));
 
         if (state != 0) {
             return;
@@ -122,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (triesLeft == 0) {
             triesCounter.setTextColor(Color.RED);
             Toast.makeText(this, R.string.lost, Toast.LENGTH_SHORT).show();
-            imagesLeft = -1;
+            platesLeft = -1;
             chronometer.stop();
             return;
         }
@@ -132,12 +164,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (!checkAllEqual()) {
             return;
         }
-        for (ImageButton button : pickedButtons) {
+        for (PlateButton button : pickedButtons) {
             button.is_chosen = true;
         }
         pickedButtons.clear();
-        imagesLeft--;
-        if (imagesLeft == 0) {
+        platesLeft--;
+        if (platesLeft == 0) {
             chronometer.stop();
             Toast.makeText(this, R.string.win, Toast.LENGTH_SHORT).show();
         }
@@ -145,30 +177,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     boolean checkAllEqual() {
         int check = pickedButtons.get(0).number;
-        for (ImageButton button : pickedButtons) {
+        for (PlateButton button : pickedButtons) {
             if (check != button.number) return false;
         }
         return true;
     }
 }
 
-class ImageButton extends AppCompatButton {
-    int number;
-    boolean is_chosen;
-
-    public ImageButton(Context context) {
-        super(context);
-        TableRow.LayoutParams params = new TableRow.LayoutParams();
-        params.weight = 1;
-        params.rightMargin = params.leftMargin = (int) getResources().getDimension(R.dimen.defMargin);
-        setLayoutParams(params);
-        setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 8, getResources().getDisplayMetrics()));
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        setHeight(getWidth());
-        super.onDraw(canvas);
-    }
-
-}

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="imagesTextSize">8sp</dimen>
     <dimen name="textSize">24sp</dimen>
     <dimen name="buttonTextSize">22sp</dimen>
+
     <dimen name="defMargin">1dp</dimen>
+    <dimen name="settingsMargin">50dp</dimen>
     <dimen name="buttonHeight">60dp</dimen>
 </resources>
