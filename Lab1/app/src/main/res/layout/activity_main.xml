@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/images"
+        app:layout_constraintBottom_toTopOf="@+id/plates"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -55,7 +55,7 @@
     </LinearLayout>
 
     <TableLayout
-        android:id="@+id/images"
+        android:id="@+id/plates"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/topPanel" />
@@ -70,15 +70,15 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <include
-            android:id="@+id/settingsRows"
+            android:id="@+id/settingRows"
             layout="@layout/settings_row" />
 
         <include
-            android:id="@+id/settingsColumns"
+            android:id="@+id/settingColumns"
             layout="@layout/settings_row" />
 
         <include
-            android:id="@+id/settingsStates"
+            android:id="@+id/settingSetLen"
             layout="@layout/settings_row" />
 
         <TableRow>
