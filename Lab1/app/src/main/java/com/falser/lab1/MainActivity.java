@@ -97,7 +97,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         ImageButton imageButton = (ImageButton) view;
-        if (!chronometer.isActivated() && imagesLeft > 0) chronometer.start();
+        if (!chronometer.isActivated() && imagesLeft > 0) {
+            chronometer.setBase(SystemClock.elapsedRealtime());
+            chronometer.start();
+        }
         if (imageButton.is_chosen || imagesLeft < 1 || state != Constants.N_STATES && pickedButtons.contains(imageButton)) {
             return;
         }
