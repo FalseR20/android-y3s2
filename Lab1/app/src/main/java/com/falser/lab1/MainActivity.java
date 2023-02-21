@@ -158,13 +158,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             isGameFinished = true;
             chronometer.stop();
         }
-
+        if (pickedButtons.size() > 0) pickedButtons.getLast().setText("");
         pickedButtons.addLast(plateButton);
         plateButton.setText(String.valueOf(plateButton.number));
 
         if (pickedButtons.size() == Constants.SET_LEN) {
             if (checkAllEqual()) {
-                for (PlateButton button : pickedButtons) button.is_chosen = true;
+                for (PlateButton button : pickedButtons) {
+                    button.is_chosen = true;
+                    button.setText(String.valueOf(button.number));
+                }
                 pickedButtons.clear();
                 platesLeft--;
                 if (platesLeft == 0) {
@@ -178,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     return;
                 }
             } else {
-                pickedButtons.pop().setText("");
+                pickedButtons.pop();
             }
         }
 
