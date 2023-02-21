@@ -5,4 +5,5 @@
     <string name="count_of_rows">Count of rows</string>
     <string name="count_of_columns">Count of columns</string>
     <string name="count_of_states">Count of states</string>
+    <string name="apply">Apply</string>
 </resources>

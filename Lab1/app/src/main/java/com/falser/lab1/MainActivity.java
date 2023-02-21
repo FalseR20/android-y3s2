@@ -39,10 +39,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_main);
+        countConstants();
+        update();
+        createSettings();
+    }
+
+    void update() {
         createElements();
         createSetsIds();
         restartImages();
-        createSettings();
     }
 
     void createElements() {
@@ -61,8 +66,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void createSetsIds() {
-        Integer[] intsArray = new Integer[Constants.N_IMAGES];
-        for (int i = 0; i < Constants.N_IMAGES; i++)
+        Integer[] intsArray = new Integer[Constants.N_PLATES];
+        for (int i = 0; i < Constants.N_PLATES; i++)
             intsArray[i] = i / Constants.N_STATES;
         setsIds = Arrays.asList(intsArray);
     }
@@ -129,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         PlateButton plateButton = (PlateButton) view;
-        if (!chronometer.isActivated() && platesLeft > 0) {
+        if (triesLeft == Constants.N_TRIES && state == Constants.N_STATES) {
             chronometer.setBase(SystemClock.elapsedRealtime());
             chronometer.start();
         }
@@ -181,6 +186,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (check != button.number) return false;
         }
         return true;
+    }
+
+    public void onApply(View view) {
+        TableRow setting;
+        Spinner spinner;
+
+        setting = findViewById(R.id.settingsRows);
+        spinner = (Spinner) setting.getChildAt(1);
+        Constants.N_ROWS = Integer.parseInt((String) spinner.getSelectedItem());
+
+        setting = findViewById(R.id.settingsColumns);
+        spinner = (Spinner) setting.getChildAt(1);
+        Constants.N_COLUMNS = Integer.parseInt((String) spinner.getSelectedItem());
+
+        setting = findViewById(R.id.settingsStates);
+        spinner = (Spinner) setting.getChildAt(1);
+        Constants.N_STATES = Integer.parseInt((String) spinner.getSelectedItem());
+
+        countConstants();
+        rows.removeAllViews();
+        update();
+    }
+
+    void countConstants(){
+        Constants.N_PLATES = Constants.N_ROWS * Constants.N_COLUMNS;
+        Constants.N_SETS = Constants.N_PLATES / Constants.N_STATES;
+        Constants.N_TRIES = (int) (Constants.N_PLATES * Constants.N_STATES * 0.6);
     }
 }
 

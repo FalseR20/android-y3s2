@@ -64,10 +64,10 @@
         android:id="@+id/settingsTable"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/settingsMargin"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintStart_toStartOf="parent">
 
         <include
             android:id="@+id/settingsRows"
@@ -80,5 +80,16 @@
         <include
             android:id="@+id/settingsStates"
             layout="@layout/settings_row" />
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/apply"
+                android:onClick="onApply"
+                android:text="@string/apply"
+                android:textSize="@dimen/buttonTextSize"
+                android:layout_marginHorizontal="@dimen/settingsMargin"
+                android:layout_weight="1"/>
+        </TableRow>
     </TableLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
