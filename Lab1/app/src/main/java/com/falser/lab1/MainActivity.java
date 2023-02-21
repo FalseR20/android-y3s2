@@ -82,7 +82,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 image.number = setsIds.get(k);
                 image.is_chosen = false;
                 image.setText("");
-//                image.setText(String.format("(%d)", image.number));
             }
         }
         chronometer.stop();
@@ -169,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 pickedButtons.clear();
                 platesLeft--;
                 if (platesLeft == 0) {
+                    isGameFinished = true;
                     chronometer.stop();
                     if (isGameFinished) {
                         Toast.makeText(this, R.string.almost_losing, Toast.LENGTH_SHORT).show();
