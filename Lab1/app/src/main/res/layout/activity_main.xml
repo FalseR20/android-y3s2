@@ -20,6 +20,23 @@
         app:layout_constraintTop_toTopOf="parent">
 
 
+        <Button
+            android:id="@+id/settings"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/buttonHeight"
+
+
+            android:onClick="restartOnClick"
+            android:text="Settings"
+            android:textAllCaps="false"
+            android:textSize="@dimen/buttonTextSize"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/chronometer"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5"
+            tools:ignore="HardcodedText" />
+
         <Chronometer
             android:id="@+id/chronometer"
             android:layout_width="wrap_content"
@@ -29,7 +46,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/triesCounter"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/settings"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5"/>
 
@@ -51,19 +68,17 @@
         <Button
             android:id="@+id/restart"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/buttonHeight"
 
 
             android:onClick="restartOnClick"
             android:text="Restart"
             android:textAllCaps="false"
-            android:textSize="@dimen/textSize"
+            android:textSize="@dimen/buttonTextSize"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/triesCounter"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5"
             tools:ignore="HardcodedText" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
