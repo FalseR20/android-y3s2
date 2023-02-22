@@ -1,0 +1,11 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name" tools:ignore="Typos">Lab1</string>
+    <string name="win">You won</string>
+    <string name="lost">You lose</string>
+    <string name="count_of_rows">Count of rows</string>
+    <string name="count_of_columns">Count of columns</string>
+    <string name="set_len">Length of set</string>
+    <string name="apply">Apply</string>
+    <string name="almost_losing">You won, but it was dangerous</string>
+    <string name="game_over">Game over</string>
+</resources>
