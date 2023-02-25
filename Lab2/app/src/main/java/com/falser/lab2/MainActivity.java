@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
     private enum listType {POSTS, USERS}
 
-    ListAdapter usersAdapter, postsAdapter;
+    ListAdapter usersAdapter, usersAdapterNoEmail, postsAdapter;
 
     private final String BASE_URL = "https://jsonplaceholder.typicode.com/";
     private String LIMIT;
@@ -104,6 +104,14 @@ public class MainActivity extends AppCompatActivity {
                 new int[]{R.id.userId, R.id.username, R.id.email}
         );
 
+        usersAdapterNoEmail = new SimpleAdapter(
+                MainActivity.this,
+                listData,
+                R.layout.user_row_no_email,
+                new String[]{"userId", "username"},
+                new int[]{R.id.userId, R.id.username}
+        );
+
         postsAdapter = new SimpleAdapter(
                 MainActivity.this,
                 listData,
@@ -140,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
         if (!listData.isEmpty()) listData.clear();
         listTitle.setText(null);
         ((BaseAdapter) usersAdapter).notifyDataSetChanged();
+        ((BaseAdapter) usersAdapterNoEmail).notifyDataSetChanged();
         ((BaseAdapter) postsAdapter).notifyDataSetChanged();
 
         emptyList.setVisibility(View.VISIBLE);
@@ -175,13 +184,7 @@ public class MainActivity extends AppCompatActivity {
                 if (isEmailVisible) {
                     listView.setAdapter(usersAdapter);
                 } else {
-                    listView.setAdapter(new SimpleAdapter(
-                            MainActivity.this,
-                            listData,
-                            R.layout.user_row,
-                            new String[]{"userId", "username"},
-                            new int[]{R.id.userId, R.id.username}
-                    ));
+                    listView.setAdapter(usersAdapterNoEmail);
                 }
                 listTitle.setText(R.string.users_list_title);
                 progressBar.setVisibility(View.GONE);
