@@ -41,7 +41,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:drawableEnd="@drawable/baseline_refresh_24"
                 android:text="@string/clear"
                 style="?android:attr/buttonBarButtonStyle" />
 
