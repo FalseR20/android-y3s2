@@ -9,27 +9,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="25sp"
+        android:padding="10dp"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/postId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:width="32sp"
-            android:text="@string/user_id_example"
-            android:textAlignment="center"
-            android:textColor="@color/design_default_color_primary"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="?attr/colorSecondary"
             android:textSize="24sp" />
 
         <TextView
             android:id="@+id/post_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="8"
+            android:gravity="start"
             android:ellipsize="end"
-            android:maxLines="1"
-            android:text="@string/post_title_example"
-            android:textSize="16sp" />
+            android:textSize="24sp" />
 
     </LinearLayout>
 
