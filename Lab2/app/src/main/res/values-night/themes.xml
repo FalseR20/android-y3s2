@@ -1,5 +1,5 @@
 <resources>
-    <style name="Theme.Android_lab_2_volley" parent="Theme.MaterialComponents.DayNight">
+    <style name="Theme.MainTheme" parent="Theme.MaterialComponents.DayNight">
         <item name="colorPrimary">@color/colorPrimaryLight</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
         <item name="colorOnPrimary">@android:color/black</item>

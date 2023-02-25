@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.android_lab_2_volley'
+    namespace 'com.falser.lab2'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.android_lab_2_volley"
+        applicationId "com.falser.lab2"
         minSdk 28
         targetSdk 33
         versionCode 1

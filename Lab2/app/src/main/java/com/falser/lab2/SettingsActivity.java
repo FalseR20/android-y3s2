@@ -1,4 +1,4 @@
-package com.example.android_lab_2_volley;
+package com.falser.lab2;
 
 import android.os.Bundle;
 import android.view.MenuItem;

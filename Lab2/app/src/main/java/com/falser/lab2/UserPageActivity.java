@@ -1,4 +1,4 @@
-package com.example.android_lab_2_volley;
+package com.falser.lab2;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -12,14 +12,15 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class PostPageActivity extends AppCompatActivity {
-    TextView titleView;
-    TextView bodyView;
+public class UserPageActivity extends AppCompatActivity {
+    TextView usernameView;
+    TextView fullNameView;
+    TextView emailView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.post_page);
+        setContentView(R.layout.user_page);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -32,11 +33,13 @@ public class PostPageActivity extends AppCompatActivity {
         try {
             JSONObject data = new JSONObject(intent.getStringExtra("data"));
 
-            String title = data.getString("post_title");
-            String body = data.getString("post_body");
+            String username = data.getString("username");
+            String fullName = data.getString("fullName");
+            String email = data.getString("email");
 
-            titleView.setText(title);
-            bodyView.setText(body);
+            usernameView.setText(username);
+            fullNameView.setText(fullName);
+            emailView.setText(email);
 
         } catch (JSONException e) {
             throw new RuntimeException(e);
@@ -44,8 +47,9 @@ public class PostPageActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        titleView = findViewById(R.id.post_title);
-        bodyView = findViewById(R.id.post_body);
+        usernameView = findViewById(R.id.user_username);
+        fullNameView = findViewById(R.id.user_fullname);
+        emailView = findViewById(R.id.user_email);
     }
 
     @Override
