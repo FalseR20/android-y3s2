@@ -29,7 +29,6 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@string/post_title_example"
-            android:textColor="@color/black"
             android:textSize="16sp" />
 
     </LinearLayout>

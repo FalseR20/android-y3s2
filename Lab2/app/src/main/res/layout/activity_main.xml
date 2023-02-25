@@ -55,17 +55,17 @@
             <EditText
                 android:id="@+id/send_email_edit"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
+                android:autofillHints=""
                 android:hint="@string/enter_email"
-                android:inputType="textEmailAddress"
-                android:autofillHints="" />
+                android:inputType="textEmailAddress" />
 
             <Button
                 android:id="@+id/send_email_btn"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_weight="0.3"
                 android:text="@string/send" />
 
@@ -101,7 +101,6 @@
             android:layout_marginTop="20dp"
             android:text="@string/some_list"
             android:textAlignment="center"
-            android:textColor="@color/black"
             android:textSize="30sp" />
 
         <ProgressBar
