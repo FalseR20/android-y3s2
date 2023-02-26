@@ -25,7 +25,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
                 android:text="@string/users"
-                style="?android:attr/buttonBarButtonStyle" />
+                style="@style/TabButton" />
 
             <Button
                 android:id="@+id/fetch_posts_btn"
@@ -34,7 +34,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
                 android:text="@string/posts"
-                style="?android:attr/buttonBarButtonStyle" />
+                style="@style/TabButton" />
 
             <Button
                 android:id="@+id/clear_list_btn"
@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/clear"
-                style="?android:attr/buttonBarButtonStyle" />
+                style="@style/TabButton"/>
 
         </LinearLayout>
 
