@@ -15,7 +15,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:contentDescription="@string/profile"
+            android:contentDescription="@string/profile_content_description"
             android:scaleType="fitCenter"
             android:src="@drawable/baseline_person_24"
             app:tint="?attr/colorPrimaryVariant" />
@@ -47,7 +47,7 @@
                 android:id="@+id/user_fullname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/fullname"
+                android:text="@string/full_name"
                 android:textSize="22sp" />
 
             <TextView

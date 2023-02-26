@@ -17,7 +17,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:contentDescription="@string/article_uppercase"
+            android:contentDescription="@string/title"
             android:scaleType="fitCenter"
             android:src="@drawable/baseline_article_24"
             app:tint="?attr/colorPrimaryVariant" />
@@ -31,7 +31,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/article_capitatized"
+                android:text="@string/article"
                 android:textAlignment="center"
                 android:textColor="?attr/colorPrimary"
                 android:textSize="40sp"
@@ -41,7 +41,7 @@
                 android:id="@+id/post_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                 android:text="@string/title"
+                android:text="@string/title"
                 android:textSize="26sp"
                 android:textStyle="bold" />
 
@@ -49,7 +49,7 @@
                 android:id="@+id/post_body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/body"
+                tools:text="Body"
                 android:textSize="22sp"
                 android:textStyle="italic" />
 

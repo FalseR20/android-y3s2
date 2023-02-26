@@ -80,7 +80,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:contentDescription="@string/empty"
+                android:contentDescription="@string/not_found"
                 android:scaleType="fitCenter"
                 android:src="@drawable/baseline_search_off_24" />
 
@@ -98,7 +98,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="@string/some_list"
+            tools:text="Some list"
             android:textAlignment="center"
             android:textSize="30sp" />
 
