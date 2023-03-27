@@ -26,9 +26,9 @@ public class CapitalsFragment extends Fragment {
         capitalsData = new ArrayList<>();
         Collections.addAll(
                 capitalsData,
-                new Capital("Minsk 🌇", R.drawable.minsk, "https://www.youtube.com/watch?v=53I-fiHGNaw"),
-                new Capital("Moscow 🌉", R.drawable.moscow, "https://www.youtube.com/watch?v=vfUrK9pFfUg"),
-                new Capital("New-York 🏙", R.drawable.new_york, "https://www.youtube.com/watch?v=7S7smPw9EiE")
+                new Capital("Berlin", R.drawable.berlin, "https://www.youtube.com/watch?v=4SGLxZnqYIg"),
+                new Capital("Paris", R.drawable.paris, "https://www.youtube.com/watch?v=-gHbYgFxNPg"),
+                new Capital("Rome", R.drawable.rome, "https://www.youtube.com/watch?v=ytiM1nMv_xU")
         );
 
         ArrayList<String> capitalsTitles = new ArrayList<>();

@@ -27,9 +27,9 @@ public class CountriesFragment extends Fragment {
         countriesData = new ArrayList<>();
         Collections.addAll(
                 countriesData,
-                new Country("Belarus 🇧🇾", R.drawable.belarus, "https://www.youtube.com/watch?v=QNdYybI3Pgs"),
-                new Country("Russia 🇷🇺", R.drawable.russia, "https://www.youtube.com/watch?v=yHIDPMzPkI0"),
-                new Country("America 🇺🇸", R.drawable.america, "https://www.youtube.com/watch?v=4Ot0T4iCXfM")
+                new Country("Germany", R.drawable.germany, "https://www.youtube.com/watch?v=rcVb6l4TpHw"),
+                new Country("France", R.drawable.france, "https://www.youtube.com/watch?v=e5Pu24Ve-vo"),
+                new Country("Italy", R.drawable.italy, "https://www.youtube.com/watch?v=GA4JThRBvck")
         );
 
         ArrayList<String> countriesTitles = new ArrayList<>();

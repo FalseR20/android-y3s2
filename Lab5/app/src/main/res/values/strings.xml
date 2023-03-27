@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Lab5 | FalseR</string>
-    <string name="countries_fragment">Countries List</string>
-    <string name="capitals_fragment">Capitals List</string>
-    <string name="tabs">TABS</string>
+    <string name="countries_fragment">Countries</string>
+    <string name="capitals_fragment">Capitals</string>
+    <string name="tabs">Tabs</string>
     <string name="about_title">About</string>
-    <string name="image">IMAGE</string>
+    <string name="image">Image</string>
 </resources>
