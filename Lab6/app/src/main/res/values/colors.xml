@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimaryDark">@android:color/holo_green_dark</color>
+    <color name="colorPrimaryLight">@android:color/holo_green_light</color>
+    <color name="colorSecondaryDark">@android:color/holo_orange_dark</color>
+    <color name="colorSecondaryLight">@android:color/holo_orange_light</color>
+</resources>
