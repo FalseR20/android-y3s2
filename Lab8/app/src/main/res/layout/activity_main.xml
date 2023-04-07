@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+    <LinearLayout
+        android:id="@+id/topPanel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/plates"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Chronometer
+            android:id="@+id/chronometer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+
+            android:textAlignment="center"
+            android:textSize="@dimen/textSize" />
+
+
+        <TextView
+            android:id="@+id/triesCounter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="0"
+            android:textAlignment="center"
+            android:textSize="@dimen/textSize"
+
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="HardcodedText" />
+
+        <Button
+            android:id="@+id/restart"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/buttonHeight"
+            android:layout_weight="1"
+
+            android:onClick="restartOnClick"
+            android:text="Restart"
+            android:textAllCaps="false"
+            android:textSize="@dimen/buttonTextSize"
+            tools:ignore="HardcodedText" />
+
+    </LinearLayout>
+
+    <TableLayout
+        android:id="@+id/plates"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/topPanel" />
+
+    <TableLayout
+        android:id="@+id/settingsTable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <include
+            android:id="@+id/settingRows"
+            layout="@layout/settings_row" />
+
+        <include
+            android:id="@+id/settingColumns"
+            layout="@layout/settings_row" />
+
+        <include
+            android:id="@+id/settingSetLen"
+            layout="@layout/settings_row" />
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/apply"
+                android:onClick="onApply"
+                android:text="@string/apply"
+                android:textSize="@dimen/buttonTextSize"
+                android:layout_marginHorizontal="@dimen/settingsMargin"
+                android:layout_weight="1"/>
+        </TableRow>
+    </TableLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
