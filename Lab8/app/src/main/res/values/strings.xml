@@ -8,4 +8,11 @@
     <string name="apply">Apply</string>
     <string name="almost_losing">You won, but it was dangerous</string>
     <string name="game_over">Game over</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <string name="common_header">Common</string>
+    <string name="difficulty">Difficulty</string>
+
+    <string name="settings">Settings</string>
+    <string name="difficulty_key">difficulty</string>
 </resources>
