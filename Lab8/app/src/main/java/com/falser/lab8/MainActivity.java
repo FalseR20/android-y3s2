@@ -1,6 +1,7 @@
 package com.falser.lab8;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -60,6 +62,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         countConstants();
         update();
         createSettings();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        Integer difficulty = Integer.parseInt(prefs.getString("difficulty", "1"));
+        Log.d("difficulty", String.format("Difficulty is %d", difficulty));
     }
 
     void update() {
