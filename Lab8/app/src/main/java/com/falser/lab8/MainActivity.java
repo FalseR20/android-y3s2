@@ -3,7 +3,7 @@ package com.falser.lab8;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.CountDownTimer;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,12 +25,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ArrayList<Integer> setsIDs;
     ArrayDeque<PlateButton> pickedButtons = new ArrayDeque<>();
     TextView timerTextView;
-    CountDownTimer timer;
+    Timer timer;
     Integer platesLeft;
     Boolean isGameStarted;
     Boolean isGameFinished;
     Integer width;
     Integer height;
+    Integer nSets;
     TextView levelTextView;
     Integer level;
     Integer setLen;
@@ -65,6 +66,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        levelTextView = findViewById(R.id.level);
+        timerTextView = findViewById(R.id.timer);
+        plates = findViewById(R.id.plates);
+
+        isGameStarted = false;
+        isGameFinished = false;
+        timer = new Timer(30000, this);
+
         createAll();
     }
 
@@ -72,26 +81,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         width = getResources().getInteger(R.integer.start_width);
         height = getResources().getInteger(R.integer.start_height);
         setLen = getResources().getInteger(R.integer.start_set_len);
+        nSets = width * height / setLen;
         level = 1;
         createField();
-        setSetsIDs();
     }
 
     public void restartOnClick(View view) {
         plates.removeAllViews();
+        isGameStarted = false;
+        isGameFinished = false;
+        if (timer != null) timer.cancel();
+        timer = new Timer(30000, this);
+        level = 1;
+        levelTextView.setText(String.valueOf(level));
         createAll();
     }
 
-    void levelUp() {
-        level++;
-        width++;
-        height++;
-        plates.removeAllViews();
-        createField();
-    }
-
     void createField() {
-        plates = findViewById(R.id.plates);
         TableRow row;
         for (int i = 0; i < width; i++) {
             row = new TableRow(this);
@@ -102,14 +108,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             plates.addView(row, i);
         }
-        levelTextView = findViewById(R.id.level);
-        timerTextView = findViewById(R.id.timer);
-        timerTextView.setText("--:--");
+
 
         setsIDs = new ArrayList<>();
         for (int i = 0; i < width * height; i++)
             setsIDs.add(i / setLen);
         Collections.shuffle(setsIDs);
+        setSetsIDs();
     }
 
     public void setSetsIDs() {
@@ -123,17 +128,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 image.setText("");
             }
         }
-        platesLeft = setLen;
+        platesLeft = nSets;
         pickedButtons.clear();
-        isGameStarted = false;
-        isGameFinished = false;
     }
 
     @Override
     public void onClick(View view) {
         PlateButton plateButton = (PlateButton) view;
         if (!isGameStarted) {
-            timer = new Timer(30000, this);
             timer.start();
             isGameStarted = true;
         }
@@ -158,14 +160,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 pickedButtons.clear();
                 platesLeft--;
                 if (platesLeft == 0) {
-                    if (isGameFinished) {
-                        Toast.makeText(this, R.string.almost_losing, Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(this, R.string.win, Toast.LENGTH_SHORT).show();
-                    }
-                    isGameFinished = true;
                     timer.cancel();
-                    return;
+                    new Handler().postDelayed(() -> {
+                        levelUp();
+                        timer.start();
+                    }, 100);
                 }
             } else {
                 pickedButtons.pop();
@@ -186,9 +185,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return true;
     }
 
-    void finishGame(){
+    void finishGame() {
         isGameFinished = true;
         Toast.makeText(this, R.string.game_over, Toast.LENGTH_SHORT).show();
+    }
+
+    void levelUp() {
+        Toast.makeText(this, R.string.level_up, Toast.LENGTH_SHORT).show();
+        level++;
+        levelTextView.setText(String.valueOf(level));
+        width++;
+        height++;
+        nSets = width * height / setLen;
+        plates.removeAllViews();
+        createField();
     }
 
 }

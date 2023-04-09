@@ -10,12 +10,12 @@ public class Timer extends CountDownTimer {
     public Timer(long millisInFuture, MainActivity mainActivity) {
         super(millisInFuture, 100);
         this.mainActivity = mainActivity;
+        mainActivity.timerTextView.setText(String.format(Locale.US, "%.1f", millisInFuture / 1000D));
     }
 
     @Override
     public void onTick(long millisUntilFinished) {
-        double sec = millisUntilFinished / 1000D;
-        mainActivity.timerTextView.setText(String.format(Locale.US, "%.1f", sec));
+        mainActivity.timerTextView.setText(String.format(Locale.US, "%.1f", millisUntilFinished / 1000D));
     }
 
     @Override
