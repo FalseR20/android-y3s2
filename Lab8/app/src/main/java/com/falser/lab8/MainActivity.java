@@ -9,9 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Chronometer;
-import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -26,16 +24,19 @@ import java.util.Collections;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    TableLayout rows;
+    TableLayout plates;
     ArrayList<Integer> setsIds;
-
     ArrayDeque<PlateButton> pickedButtons = new ArrayDeque<>();
     Chronometer chronometer;
     TextView triesCounter;
-    int platesLeft;
-    int triesLeft;
-    boolean isGameStarted;
-    boolean isGameFinished;
+    Integer platesLeft;
+    Integer triesLeft;
+    Boolean isGameStarted;
+    Boolean isGameFinished;
+    Integer width;
+    Integer height;
+    Integer setLen;
+    Integer level;
 
 
     @Override
@@ -56,15 +57,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        countConstants();
-        update();
-        createSettings();
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -72,31 +64,61 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d("difficulty", String.format("Difficulty is %d", difficulty));
     }
 
-    void update() {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
         createPlates();
+        restart();
         createSetsIds();
-        restartPlates();
+    }
+
+    void setFirstLevel() {
+        level = 1;
+        changeLevel();
+    }
+
+    void levelUp() {
+        level++;
+        width++;
+        height++;
+        changeLevel();
+    }
+
+    void changeLevel() {
+
     }
 
     void createPlates() {
-        rows = findViewById(R.id.plates);
+        plates = findViewById(R.id.plates);
         TableRow row;
-        for (int i = 0; i < Constants.N_ROWS; i++) {
+        for (int i = 0; i < width; i++) {
             row = new TableRow(this);
-            for (int j = 0; j < Constants.N_COLUMNS; j++) {
+            for (int j = 0; j < height; j++) {
                 PlateButton plateButton = new PlateButton(this);
                 plateButton.setOnClickListener(this);
                 row.addView(plateButton, j);
             }
-            rows.addView(row, i);
+            plates.addView(row, i);
         }
         chronometer = findViewById(R.id.chronometer);
         triesCounter = findViewById(R.id.triesCounter);
     }
 
+    void restart() {
+        width = R.integer.start_width;
+        height = R.integer.start_height;
+        setLen = R.integer.start_set_len;
+        restartPlates();
+    }
+
+    public void restartOnClick(View view) {
+        restart();
+    }
+
     private void createSetsIds() {
         setsIds = new ArrayList<>();
-        for (int i = 0; i < Constants.N_PLATES; i++)
+        for (int i = 0; i < width * height; i++)
             setsIds.add(i / Constants.SET_LEN);
     }
 
@@ -104,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         randomizeSetsIds();
         TableRow row;
         for (int i = 0, k = 0; i < Constants.N_ROWS; i++) {
-            row = (TableRow) rows.getChildAt(i);
+            row = (TableRow) plates.getChildAt(i);
             for (int j = 0; j < Constants.N_COLUMNS; j++, k++) {
                 PlateButton image = (PlateButton) row.getChildAt(j);
                 image.number = setsIds.get(k);
@@ -126,38 +148,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void randomizeSetsIds() {
         Collections.shuffle(setsIds);
         Log.d(this.getClass().getName(), String.format("Random ints: %s", setsIds));
-    }
-
-    private void createSettings() {
-        TableRow setting;
-        TextView label;
-        Spinner spinner;
-        ArrayAdapter<CharSequence> adapter;
-
-        setting = findViewById(R.id.settingRows);
-        label = (TextView) setting.getChildAt(0);
-        label.setText(R.string.count_of_rows);
-        spinner = (Spinner) setting.getChildAt(1);
-        adapter = ArrayAdapter.createFromResource(this, R.array.rows_array, android.R.layout.simple_dropdown_item_1line);
-        spinner.setAdapter(adapter);
-
-        setting = findViewById(R.id.settingColumns);
-        label = (TextView) setting.getChildAt(0);
-        label.setText(R.string.count_of_columns);
-        spinner = (Spinner) setting.getChildAt(1);
-        adapter = ArrayAdapter.createFromResource(this, R.array.columns_array, android.R.layout.simple_dropdown_item_1line);
-        spinner.setAdapter(adapter);
-
-        setting = findViewById(R.id.settingSetLen);
-        label = (TextView) setting.getChildAt(0);
-        label.setText(R.string.set_len);
-        spinner = (Spinner) setting.getChildAt(1);
-        adapter = ArrayAdapter.createFromResource(this, R.array.set_lengths, android.R.layout.simple_dropdown_item_1line);
-        spinner.setAdapter(adapter);
-    }
-
-    public void restartOnClick(View view) {
-        restartPlates();
     }
 
     @Override
@@ -227,31 +217,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return true;
     }
 
-    public void onApply(View view) {
-        TableRow setting;
-        Spinner spinner;
-
-        setting = findViewById(R.id.settingRows);
-        spinner = (Spinner) setting.getChildAt(1);
-        Constants.N_ROWS = Integer.parseInt((String) spinner.getSelectedItem());
-
-        setting = findViewById(R.id.settingColumns);
-        spinner = (Spinner) setting.getChildAt(1);
-        Constants.N_COLUMNS = Integer.parseInt((String) spinner.getSelectedItem());
-
-        setting = findViewById(R.id.settingSetLen);
-        spinner = (Spinner) setting.getChildAt(1);
-        Constants.SET_LEN = Integer.parseInt((String) spinner.getSelectedItem());
-
-        countConstants();
-        rows.removeAllViews();
-        update();
-    }
-
-    void countConstants() {
-        Constants.N_PLATES = Constants.N_ROWS * Constants.N_COLUMNS;
-        Constants.N_SETS = Constants.N_PLATES / Constants.SET_LEN;
-        Constants.N_TRIES = Constants.N_PLATES * Constants.SET_LEN;
-    }
 }
 
