@@ -29,13 +29,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Integer platesLeft;
     Boolean isGameStarted;
     Boolean isGameFinished;
-    Integer width;
     Integer height;
+    Integer width;
     Integer nSets;
-    TextView levelTextView;
-    Integer level;
+    Level level;
     Integer setLen;
     Integer difficulty;
+    int maxLevel;
+    int[] heights;
+    int[] widths;
+    int[] setLengths;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -66,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        levelTextView = findViewById(R.id.level);
+        level = new Level(findViewById(R.id.level));
         timerTextView = findViewById(R.id.timer);
         plates = findViewById(R.id.plates);
 
@@ -78,11 +81,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     void createAll() {
-        width = getResources().getInteger(R.integer.start_width);
-        height = getResources().getInteger(R.integer.start_height);
-        setLen = getResources().getInteger(R.integer.start_set_len);
-        nSets = width * height / setLen;
-        level = 1;
+        heights = getResources().getIntArray(R.array.difficulties_heights);
+        widths = getResources().getIntArray(R.array.difficulties_widths);
+        setLengths = getResources().getIntArray(R.array.difficulties_set_lengths);
+        height = heights[0];
+        width = widths[0];
+        setLen = setLengths[0];
+        maxLevel = heights.length;
+        nSets = height * width / setLen;
         createField();
     }
 
@@ -92,16 +98,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         isGameFinished = false;
         if (timer != null) timer.cancel();
         timer = new Timer(30000, this);
-        level = 1;
-        levelTextView.setText(String.valueOf(level));
+        level.reset();
         createAll();
     }
 
     void createField() {
         TableRow row;
-        for (int i = 0; i < width; i++) {
+        for (int i = 0; i < height; i++) {
             row = new TableRow(this);
-            for (int j = 0; j < height; j++) {
+            for (int j = 0; j < width; j++) {
                 PlateButton plateButton = new PlateButton(this);
                 plateButton.setOnClickListener(this);
                 row.addView(plateButton, j);
@@ -111,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         setsIDs = new ArrayList<>();
-        for (int i = 0; i < width * height; i++)
+        for (int i = 0; i < height * width; i++)
             setsIDs.add(i / setLen);
         Collections.shuffle(setsIDs);
         setSetsIDs();
@@ -160,11 +165,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 pickedButtons.clear();
                 platesLeft--;
                 if (platesLeft == 0) {
-                    timer.cancel();
-                    new Handler().postDelayed(() -> {
-                        levelUp();
-                        timer.start();
-                    }, 100);
+                    new Handler().postDelayed(this::levelUp, 100);
                 }
             } else {
                 pickedButtons.pop();
@@ -191,15 +192,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     void levelUp() {
+        if (level.up(maxLevel)) {
+            Toast.makeText(this, R.string.win, Toast.LENGTH_SHORT).show();
+            return;
+        }
         Toast.makeText(this, R.string.level_up, Toast.LENGTH_SHORT).show();
-        level++;
-        levelTextView.setText(String.valueOf(level));
-        width++;
-        height++;
-        nSets = width * height / setLen;
+
+        height = heights[level.getLevelIndex()];
+        width = widths[level.getLevelIndex()];
+        setLen = setLengths[level.getLevelIndex()];
+        nSets = height * width / setLen;
         plates.removeAllViews();
         createField();
     }
-
 }
-

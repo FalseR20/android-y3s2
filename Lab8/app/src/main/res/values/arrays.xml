@@ -16,7 +16,7 @@
         <item>3</item>
         <item>4</item>
     </string-array>
-    <!-- Reply Preference -->
+
     <string-array name="difficulties">
         <item>Easy</item>
         <item>Medium</item>
@@ -28,5 +28,30 @@
         <item>2</item>
         <item>3</item>
     </string-array>
+
+    <integer-array name="difficulties_heights">
+        <item>2</item>
+        <item>3</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </integer-array>
+    <integer-array name="difficulties_widths">
+        <item>2</item>
+        <item>2</item>
+        <item>3</item>
+        <item>3</item>
+        <item>3</item>
+        <item>3</item>
+    </integer-array>
+    <integer-array name="difficulties_set_lengths">
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+    </integer-array>
 
 </resources>
