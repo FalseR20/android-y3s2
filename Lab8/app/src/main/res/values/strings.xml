@@ -18,4 +18,6 @@
     <string name="time_key">difficulty</string>
     <string name="how_much_time_to_play">How much time to play</string>
     <string name="restart">Restart</string>
+    <string name="info">Info</string>
+    <string name="info_title">Info | FalseR</string>
 </resources>

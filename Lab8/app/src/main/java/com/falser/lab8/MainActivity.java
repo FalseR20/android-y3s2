@@ -53,6 +53,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
             return true;
+        } else if (id == R.id.action_info) {
+            Intent intent = new Intent(this, InfoActivity.class);
+            startActivity(intent);
+            return true;
         }
         return false;
     }
