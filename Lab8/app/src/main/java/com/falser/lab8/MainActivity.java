@@ -34,8 +34,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Integer nSets;
     Level level;
     Integer setLen;
-    Integer time = 30000;
-    int maxLevel;
+    Integer time = 100000;
     int[] heights;
     int[] widths;
     int[] setLengths;
@@ -65,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onResume() {
         super.onResume();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        time = Integer.parseInt(prefs.getString(getResources().getString(R.string.time_key), "30000"));
+        time = Integer.parseInt(prefs.getString(getResources().getString(R.string.time_key), "100000"));
         if (isGameStarted && !isGameFinished) return;
         timer = new Timer(time, this);
     }
@@ -75,7 +74,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        level = new Level(findViewById(R.id.level));
+        heights = getResources().getIntArray(R.array.difficulties_heights);
+        widths = getResources().getIntArray(R.array.difficulties_widths);
+        setLengths = getResources().getIntArray(R.array.difficulties_set_lengths);
+
+        level = new Level(findViewById(R.id.level), heights.length);
         timerTextView = findViewById(R.id.timer);
         plates = findViewById(R.id.plates);
 
@@ -87,13 +90,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     void createAll() {
-        heights = getResources().getIntArray(R.array.difficulties_heights);
-        widths = getResources().getIntArray(R.array.difficulties_widths);
-        setLengths = getResources().getIntArray(R.array.difficulties_set_lengths);
         height = heights[0];
         width = widths[0];
         setLen = setLengths[0];
-        maxLevel = heights.length;
+
         nSets = height * width / setLen;
         createField();
     }
@@ -150,11 +150,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             timer.start();
             isGameStarted = true;
         }
-        if (isGameFinished) {
-            Toast.makeText(this, R.string.game_over, Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (plateButton.is_chosen || pickedButtons.contains(plateButton)) {
+        if (isGameFinished || plateButton.is_chosen || pickedButtons.contains(plateButton)) {
             return;
         }
 
@@ -177,11 +173,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 pickedButtons.pop();
             }
         }
-
-
-        if (isGameFinished) {
-            Toast.makeText(this, R.string.lost, Toast.LENGTH_SHORT).show();
-        }
     }
 
     boolean checkAllEqual() {
@@ -194,12 +185,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     void finishGame() {
         isGameFinished = true;
-        Toast.makeText(this, R.string.game_over, Toast.LENGTH_SHORT).show();
+        level.lose();
     }
 
     void levelUp() {
-        if (level.up(maxLevel)) {
-            Toast.makeText(this, R.string.win, Toast.LENGTH_SHORT).show();
+        if (level.up()) {
             timer.cancel();
             return;
         }

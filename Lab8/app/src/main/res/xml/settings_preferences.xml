@@ -3,7 +3,7 @@
     <PreferenceCategory app:title="@string/common_header">
 
         <ListPreference
-                app:defaultValue="30000"
+                app:defaultValue="100000"
                 app:entries="@array/times"
                 app:entryValues="@array/difficulties_values"
                 app:icon="@drawable/baseline_speed_24"

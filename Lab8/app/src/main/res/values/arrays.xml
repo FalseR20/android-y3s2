@@ -1,36 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="rows_array">
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-    </string-array>
-    <string-array name="columns_array">
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-    </string-array>
-    <string-array name="set_lengths">
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-    </string-array>
-
     <string-array name="times">
-        <item>Peace (5m)</item>
-        <item>Easy (60s)</item>
-        <item>Medium (30s)</item>
-        <item>Hard (20s)</item>
-        <item>Ultra (15s)</item>
+        <item>Peace</item>
+        <item>Easy</item>
+        <item>Medium</item>
+        <item>Hard</item>
+        <item>Ultra</item>
+        <item>Monster</item>
     </string-array>
 
     <string-array name="difficulties_values">
         <item>300000</item>
-        <item>60000</item>
-        <item>30000</item>
-        <item>20000</item>
-        <item>15000</item>
+        <item>100000</item>
+        <item>70000</item>
+        <item>55000</item>
+        <item>45000</item>
+        <item>40000</item>
     </string-array>
 
     <integer-array name="difficulties_heights">
@@ -39,7 +24,7 @@
         <item>3</item>
         <item>4</item>
         <item>5</item>
-        <item>6</item>
+        <item>4</item>
     </integer-array>
     <integer-array name="difficulties_widths">
         <item>2</item>
@@ -55,7 +40,7 @@
         <item>2</item>
         <item>2</item>
         <item>2</item>
-        <item>2</item>
+        <item>3</item>
     </integer-array>
 
 </resources>
