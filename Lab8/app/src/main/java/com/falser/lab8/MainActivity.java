@@ -2,14 +2,11 @@ package com.falser.lab8;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.util.Log;
+import android.os.CountDownTimer;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Chronometer;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -25,19 +22,19 @@ import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     TableLayout plates;
-    ArrayList<Integer> setsIds;
+    ArrayList<Integer> setsIDs;
     ArrayDeque<PlateButton> pickedButtons = new ArrayDeque<>();
-    Chronometer chronometer;
-    TextView triesCounter;
+    TextView timerTextView;
+    CountDownTimer timer;
     Integer platesLeft;
-    Integer triesLeft;
     Boolean isGameStarted;
     Boolean isGameFinished;
     Integer width;
     Integer height;
-    Integer setLen;
+    TextView levelTextView;
     Integer level;
-
+    Integer setLen;
+    Integer difficulty;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -60,36 +57,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onResume() {
         super.onResume();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        Integer difficulty = Integer.parseInt(prefs.getString("difficulty", "1"));
-        Log.d("difficulty", String.format("Difficulty is %d", difficulty));
+        difficulty = Integer.parseInt(prefs.getString("difficulty", "1"));
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        createPlates();
-        restart();
-        createSetsIds();
+
+        createAll();
     }
 
-    void setFirstLevel() {
+    void createAll() {
+        width = getResources().getInteger(R.integer.start_width);
+        height = getResources().getInteger(R.integer.start_height);
+        setLen = getResources().getInteger(R.integer.start_set_len);
         level = 1;
-        changeLevel();
+        createField();
+        setSetsIDs();
+    }
+
+    public void restartOnClick(View view) {
+        plates.removeAllViews();
+        createAll();
     }
 
     void levelUp() {
         level++;
         width++;
         height++;
-        changeLevel();
+        plates.removeAllViews();
+        createField();
     }
 
-    void changeLevel() {
-
-    }
-
-    void createPlates() {
+    void createField() {
         plates = findViewById(R.id.plates);
         TableRow row;
         for (int i = 0; i < width; i++) {
@@ -101,61 +102,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             plates.addView(row, i);
         }
-        chronometer = findViewById(R.id.chronometer);
-        triesCounter = findViewById(R.id.triesCounter);
-    }
+        levelTextView = findViewById(R.id.level);
+        timerTextView = findViewById(R.id.timer);
+        timerTextView.setText("--:--");
 
-    void restart() {
-        width = R.integer.start_width;
-        height = R.integer.start_height;
-        setLen = R.integer.start_set_len;
-        restartPlates();
-    }
-
-    public void restartOnClick(View view) {
-        restart();
-    }
-
-    private void createSetsIds() {
-        setsIds = new ArrayList<>();
+        setsIDs = new ArrayList<>();
         for (int i = 0; i < width * height; i++)
-            setsIds.add(i / Constants.SET_LEN);
+            setsIDs.add(i / setLen);
+        Collections.shuffle(setsIDs);
     }
 
-    public void restartPlates() {
-        randomizeSetsIds();
+    public void setSetsIDs() {
         TableRow row;
-        for (int i = 0, k = 0; i < Constants.N_ROWS; i++) {
+        for (int i = 0, k = 0; i < height; i++) {
             row = (TableRow) plates.getChildAt(i);
-            for (int j = 0; j < Constants.N_COLUMNS; j++, k++) {
+            for (int j = 0; j < width; j++, k++) {
                 PlateButton image = (PlateButton) row.getChildAt(j);
-                image.number = setsIds.get(k);
+                image.number = setsIDs.get(k);
                 image.is_chosen = false;
                 image.setText("");
             }
         }
-        chronometer.stop();
-        chronometer.setBase(SystemClock.elapsedRealtime());
-        platesLeft = Constants.N_SETS;
-        triesLeft = Constants.N_TRIES;
-        triesCounter.setText(String.valueOf(triesLeft));
-        triesCounter.setTextColor(Color.WHITE);
+        platesLeft = setLen;
         pickedButtons.clear();
         isGameStarted = false;
         isGameFinished = false;
-    }
-
-    private void randomizeSetsIds() {
-        Collections.shuffle(setsIds);
-        Log.d(this.getClass().getName(), String.format("Random ints: %s", setsIds));
     }
 
     @Override
     public void onClick(View view) {
         PlateButton plateButton = (PlateButton) view;
         if (!isGameStarted) {
-            chronometer.setBase(SystemClock.elapsedRealtime());
-            chronometer.start();
+            timer = new Timer(30000, this);
+            timer.start();
             isGameStarted = true;
         }
         if (isGameFinished) {
@@ -166,21 +145,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
-        triesLeft--;
-        triesCounter.setText(String.valueOf(triesLeft));
-        if (triesLeft == 9) {
-            triesCounter.setTextColor(Color.YELLOW);
-        }
-        if (triesLeft == 0) {
-            triesCounter.setTextColor(Color.RED);
-            isGameFinished = true;
-            chronometer.stop();
-        }
         if (pickedButtons.size() > 0) pickedButtons.getLast().setText("");
         pickedButtons.addLast(plateButton);
         plateButton.setText(String.valueOf(plateButton.number));
 
-        if (pickedButtons.size() == Constants.SET_LEN) {
+        if (pickedButtons.size() == setLen) {
             if (checkAllEqual()) {
                 for (PlateButton button : pickedButtons) {
                     button.is_chosen = true;
@@ -195,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Toast.makeText(this, R.string.win, Toast.LENGTH_SHORT).show();
                     }
                     isGameFinished = true;
-                    chronometer.stop();
+                    timer.cancel();
                     return;
                 }
             } else {
@@ -215,6 +184,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (check != button.number) return false;
         }
         return true;
+    }
+
+    void finishGame(){
+        isGameFinished = true;
+        Toast.makeText(this, R.string.game_over, Toast.LENGTH_SHORT).show();
     }
 
 }
