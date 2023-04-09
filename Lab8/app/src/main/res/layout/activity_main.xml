@@ -1,62 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
 
 
     <LinearLayout
-        android:id="@+id/topPanel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/plates"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/timer"
+            android:id="@+id/topPanel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_margin="10dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/plates"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            android:textAlignment="center"
-            android:textSize="@dimen/textSize"
-            tools:text="01:12"/>
+        <TextView
+                android:id="@+id/timer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+
+                android:textAlignment="center"
+                android:textSize="@dimen/textSize"
+                tools:text="01:12" />
 
 
         <TextView
-            android:id="@+id/level"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="0"
-            android:textAlignment="center"
-            android:textSize="@dimen/textSize"
+                android:id="@+id/level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="0"
+                android:textAlignment="center"
+                android:textSize="@dimen/textSize"
 
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="HardcodedText" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="HardcodedText" />
 
         <Button
-            android:id="@+id/restart"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/buttonHeight"
-            android:layout_weight="1"
-            android:onClick="restartOnClick"
-            android:text="@string/restart"
-            android:textAllCaps="false"
-            android:textSize="@dimen/buttonTextSize" />
+                android:id="@+id/restart"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/buttonHeight"
+                android:layout_weight="1"
+                android:onClick="restartOnClick"
+                android:text="@string/restart"
+                android:textAllCaps="false"
+                android:textSize="@dimen/buttonTextSize" />
 
     </LinearLayout>
 
     <TableLayout
-        android:id="@+id/plates"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/topPanel" />
+            android:id="@+id/plates"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/topPanel" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

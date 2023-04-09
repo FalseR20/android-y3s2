@@ -3,14 +3,14 @@
     <PreferenceCategory app:title="@string/common_header">
 
         <ListPreference
-            app:defaultValue="30000"
-            app:entries="@array/times"
-            app:entryValues="@array/difficulties_values"
-            app:icon="@drawable/baseline_speed_24"
-            app:key="@string/time_key"
-            app:summary="@string/how_much_time_to_play"
-            app:title="@string/difficulty"
-            app:useSimpleSummaryProvider="true" />
+                app:defaultValue="30000"
+                app:entries="@array/times"
+                app:entryValues="@array/difficulties_values"
+                app:icon="@drawable/baseline_speed_24"
+                app:key="@string/time_key"
+                app:summary="@string/how_much_time_to_play"
+                app:title="@string/difficulty"
+                app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
 

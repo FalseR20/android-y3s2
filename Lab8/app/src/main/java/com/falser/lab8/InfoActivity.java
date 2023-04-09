@@ -1,11 +1,11 @@
 package com.falser.lab8;
 
+import android.os.Bundle;
+import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Bundle;
-import android.view.MenuItem;
 
 public class InfoActivity extends AppCompatActivity {
 

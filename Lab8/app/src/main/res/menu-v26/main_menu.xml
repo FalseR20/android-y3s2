@@ -12,6 +12,5 @@
             android:title="@string/info"
             app:showAsAction="ifRoom"
             android:icon="@drawable/info_icon"
-            android:iconTint="?attr/colorOnSurface">
-    </item>
+            android:iconTint="?attr/colorOnSurface" />
 </menu>
