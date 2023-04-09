@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Integer nSets;
     Level level;
     Integer setLen;
-    Integer difficulty;
+    Integer time = 30000;
     int maxLevel;
     int[] heights;
     int[] widths;
@@ -61,7 +61,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onResume() {
         super.onResume();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        difficulty = Integer.parseInt(prefs.getString("difficulty", "1"));
+        time = Integer.parseInt(prefs.getString(getResources().getString(R.string.time_key), "30000"));
+        if (isGameStarted && !isGameFinished) return;
+        timer = new Timer(time, this);
     }
 
     @Override
@@ -75,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         isGameStarted = false;
         isGameFinished = false;
-        timer = new Timer(30000, this);
+        timer = new Timer(time, this);
 
         createAll();
     }
@@ -97,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         isGameStarted = false;
         isGameFinished = false;
         if (timer != null) timer.cancel();
-        timer = new Timer(30000, this);
+        timer = new Timer(time, this);
         level.reset();
         createAll();
     }
@@ -194,6 +196,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     void levelUp() {
         if (level.up(maxLevel)) {
             Toast.makeText(this, R.string.win, Toast.LENGTH_SHORT).show();
+            timer.cancel();
             return;
         }
         Toast.makeText(this, R.string.level_up, Toast.LENGTH_SHORT).show();

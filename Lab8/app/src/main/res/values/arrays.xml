@@ -17,16 +17,20 @@
         <item>4</item>
     </string-array>
 
-    <string-array name="difficulties">
-        <item>Easy</item>
-        <item>Medium</item>
-        <item>Hard</item>
+    <string-array name="times">
+        <item>Peace (5m)</item>
+        <item>Easy (60s)</item>
+        <item>Medium (30s)</item>
+        <item>Hard (20s)</item>
+        <item>Ultra (15s)</item>
     </string-array>
 
     <string-array name="difficulties_values">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
+        <item>300000</item>
+        <item>60000</item>
+        <item>30000</item>
+        <item>20000</item>
+        <item>15000</item>
     </string-array>
 
     <integer-array name="difficulties_heights">
